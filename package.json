@@ -1,0 +1,23 @@
+{
+  "name": "cornelltech-weekly",
+  "version": "1.0.0",
+  "description": "scripts to produce a weekly email digest from posts to cornell tech's #building_comments and #cafe_comments channels",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smalldatalab/cornelltech-weekly.git"
+  },
+  "author": "Faisal Alquaddoomi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smalldatalab/cornelltech-weekly/issues"
+  },
+  "homepage": "https://github.com/smalldatalab/cornelltech-weekly#readme",
+  "dependencies": {
+    "emoji-datasource": "^3.0.0",
+    "emoji-datasource-apple": "^3.0.0"
+  }
+}
