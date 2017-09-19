@@ -10,6 +10,7 @@ After cloning the repository, run the following commands in the checked-out fold
 `npm install`
 
 You must create a file called `private_config.py` and add the following line to it:
+
 `SLACK_TOKEN = "<your web token here>"`
 
 This script uses Slack's legacy tokens; you can obtain a token for your organization here:
