@@ -5,7 +5,8 @@ from slackclient import SlackClient
 from digestlib import *
 
 # some initial settings
-TARGET_ADDRESS = 'falquaddoomi@gmail.com'
+GMAIL_ACCT = 'falquaddoomi' # which account will send the digest
+TARGET_ADDRESS = 'falquaddoomi@gmail.com' # where the digest will be sent
 included_channels = [u'building_comments', u'cafe_comments']
 
 # --- preamble: connect to slack w/private token
@@ -39,7 +40,7 @@ for cid in channel_ids:
     # grab the history for each
     results = sc.api_call("channels.history", channel=channel_ids[cid], count=1000)
     channel_comments[cid] = results['messages']
-    
+
 # this transformed version is used elsewhere
 chat_messages = [
     msg for msg in reversed(channel_comments['cafe_comments'])
@@ -65,12 +66,12 @@ def replace_name_html(m):
         return '<b style="color: #3393cc;">@%s</b>' % users_map[m.group(1)]
     except KeyError:
         return "<b>%s</b>" % m.group(0)
-    
-    
+
+
 def replace_emoji(m):
     try:
         emoji = shortname_to_emoji[m.group('sn')]
-        
+
         if m.group('mod') and 'skin_variations' in emoji:
             # just print the emoji + variation out as two separate characters
             mod = shortname_to_emoji[m.group('mod')]
@@ -81,7 +82,7 @@ def replace_emoji(m):
     except KeyError:
         return m.group(0)
 
-    
+
 # compute time bounds
 start_time = min(min(float(msg['ts']) for msg in messages) for messages in channel_comments.values())
 end_time = max(max(float(msg['ts']) for msg in messages) for messages in channel_comments.values())
@@ -98,7 +99,7 @@ def emit(mkdown):
     global emissions
     emissions.append(mkdown)
 
-    
+
 emit(HTML("""<div style="text-align: center; margin-bottom: 2em;">
 <h1 style="margin-bottom: 0.5em; font-size: xx-large;">Cornell Tech Weekly Digest</h1>
 <div style="font-size: large; line-height: 150%%; color: #777;">messages from %(channel_list)s<br />from %(start_datestr)s to %(end_datestr)s</div>
@@ -125,30 +126,30 @@ for channel_name, comments in channel_comments.items():
         }
         for msg in personal_messages
     ]
-    
+
     # actually print stuff now
-    
+
     emit(HTML('<div style="margin-left: auto; padding: 20px; padding-top: 10px; margin-right: auto; margin-bottom: 1em; max-width: 600px; border-radius: 3px; border: solid 1px #ccc;">'))
-    
+
     emit(HTML('<h2 style="font-size: x-large;">#%s</h2><hr color="#ccc" size="1" style="color: #ccc;" />' % channel_name))
 
     for day, messages in groupby(localized_chats, lambda x: custom_strftime("%A, %B {S}", x['datetime'])):
         emit(HTML('<h3 style="color: #555;">%s</h3>' % day))
         emit(HTML('<ul style="margin-bottom: 0.5em;">'))
-        
+
         for message in messages:
             final_text = find_names_re.sub(replace_name_html, message['text'])
             final_text = find_emoji_re.sub(replace_emoji, final_text)
-            
+
             data = {
                 'text': final_text,
                 'timeofday': custom_strftime("%-I:%M %p", message['datetime']),
                 'author': users_map[message['user']]
             }
             emit(HTML("""<li style="margin-bottom: 0.5em;"><b style="font-size: larger;">%(author)s</b> <span style="color: #777; font-size: smaller;">%(timeofday)s</span><br />%(text)s</li>""" % data))
-        
+
         emit(HTML("</ul>"))
-        
+
     emit(HTML("</div>"))
 
 
@@ -157,7 +158,7 @@ for channel_name, comments in channel_comments.items():
 # ---
 
 import yagmail
-yag = yagmail.SMTP('falquaddoomi')
+yag = yagmail.SMTP(GMAIL_ACCT)
 
 from markdown import markdown
 html = ""
