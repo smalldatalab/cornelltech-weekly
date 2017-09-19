@@ -20,4 +20,4 @@ https://api.slack.com/custom-integrations/legacy-tokens
 
 Edit the variables at the top of `send_digest.py`, specifically `TARGET_ADDRESS` and `included_channels`.
 
-Run the script by executing `python send_digest.py`, which will send a digest summary email to `TARGET_ADDRESS`.
+Run the script by executing `python send_digest.py`, which will send a digest summary email to `TARGET_ADDRESS`. Note that you should run the script interactively the first time, as you'll be prompted for a password. Save the password if you wish future runs to be executable non-interactively (e.g. as a cron job).
