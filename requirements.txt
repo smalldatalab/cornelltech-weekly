@@ -22,7 +22,7 @@ Jinja2==2.9.6
 jsonschema==2.6.0
 jupyter-client==5.1.0
 jupyter-core==4.3.0
-jupyterlab==0.26.4
+jupyterlab==1.2.21
 jupyterlab-launcher==0.3.1
 keyring==10.4.0
 keyrings.alt==2.3
